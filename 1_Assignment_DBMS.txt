@@ -1,0 +1,54 @@
+Q1.
+1. select * from emp where sal>2000 and comm>200;
+2. select * from emp where job='CLERK' or sal>2000;
+3. select * from emp where sal in (1250,1100,2850);
+4. select * from emp where sal between 1251 and 2849;
+5. select * from emp where ename like '%AS';
+6. select * from emp where job like 'C%K';
+7. select * from emp where job like '__L%M__';
+8. select * from emp where sal not in (1250,1100,2850);
+9. select * from emp where sal not between 1250 and 2850;
+10. select * from emp where job like 'C_E%K';
+11. select * from emp where comm is NULL;
+12. select * from emp where sal is null and ename like 'S%';
+13. select * from emp where job like '_____';
+14. select * from emp where ename like 'A%' and job like '_____';
+
+Q2.
+1. select ename NAME,sal SALARY,deptno "DEPT NO" from emp where deptno in (20,30,40);
+
+2. select sal+nvl(comm,0)+sal*0.10 "Total Salary" from emp;
+3. select ename NAME,job JOB from emp where hiredate<'01-JAN-86' and sal between 1200 and 2500;
+4. select empno,ename,deptno from emp where job='MANAGER' and empno=7698;
+5. select ename,job,sal from emp where deptno=10 and deptno=30;
+6. select ename || ', '|| deptno "Emp info" from emp; 
+7. select * from emp where job !='MANAGER';
+8. select ename,deptno,hiredate from emp where hiredate between '01-JAN-81' and '31-MAR-83' order by hiredate;
+9. select * from emp where job like 'AGE%' or job like '%AGE' or job like '%AGE%';
+11. select * from emp where ename like ‘A%S’ or ename like ‘_N%N’ or ename like ‘_N%S’ or ename like ‘__N%N’ or ename like ‘__N%S’
+12. select ename from emp where ename like '%"_"%' or ename like '%"_"' or ename like '"_"%';
+
+Single Row Functions:
+1. select concat(concat(substr(ename,2,5),substr(job,2,4)),'@mycompany.com') from emp;
+2. select * from emp where extract(month from hiredate)=9 ;
+3. select empno,ename,deptno,floor(months_between(sysdate,hiredate)/12) EXP from emp where months_between(sysdate,hiredate)/12 >=18 order by months_between
+(sysdate,hiredate)/12;
+4. select * from emp where extract(date from hiredate)=3;
+5. select * from emp where hiredate between '1-JAN-81' and '31-DEC-83' order by hiredate;
+
+Group Functions:
+6. select deptno Department,max(sal) Maximum,min(sal) Minimum,sum(sal) Total,round(avg(sal)) Average
+from emp
+group by deptno
+order by deptno;
+7.select deptno Department, count(*) "Total number of Managers"
+from emp 
+where job='MANAGER'
+group by deptno
+order by deptno;
+8.select deptno Department,sum(sal)
+from emp
+where job in (select job from emp where job!='MANAGER')
+having sum(sal)>2000 
+group by deptno
+order by deptno; 

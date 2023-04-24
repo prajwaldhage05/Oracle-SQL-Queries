@@ -1,0 +1,134 @@
+1. select * from emp where job='MANAGER' and sal>1500;
+2. select * from emp where sal between 1201 and 1999;
+3. select * from emp where sal in (1600,800,1900);
+4. select * from emp where REGEXP_LIKE(ename,'.*R.$');
+5. select * from emp where REGEXP_LIKE(ename,'^A.*N$');
+Q.2.
+1.select * from emp where sal>1250 and deptno=30;
+2.select * from emp where sal between 1250 and 3000;
+3.select * from emp where sal between 1251 and 2999;
+4.select * from emp where sal in (3000,1250,2500);
+5.select * from emp where ename='SMITH';
+6.select * from emp where REGEXP_LIKE(ename,'^S.*');
+7.select * from emp where REGEXP_LIKE(ename,'.*S$');
+8.select * from emp where REGEXP_LIKE(ename,'^.I.*');
+9.select * from emp where REGEXP_LIKE(ename,'^A.*L.*N$');
+10.select * from emp where REGEXP_LIKE(ename,'^A.B.*P.$');
+11.select * from emp where REGEXP_LIKE(ename,'^[ASW]');
+
+Aggregate Function:
+12. select job,max(sal),min(sal) from emp group by job;
+13. select count(*) from emp where comm =0 or comm is null;
+14. select sum(sal) from emp where deptno=10;
+15. select deptno,job, max(sal), avg(sal) from emp group by deptno,job order by deptno;
+16. select deptno,max(sal) from emp where deptno>15 group by deptno order by deptno;
+17.select deptno,sum(sal) from emp having sum(sal)>3000 group by deptno;
+18.select deptno,count(*) from emp having count(*)>=5 group by deptno;
+19. select job, count(*) from emp where sal>2000 group by job;
+20. select lower(ename),lower(job) from emp;
+21. select lpad(ename,15,'-'),lpad(job,15,'-') from emp;
+22. select mgr, min(sal),max(sal),avg(sal) from emp group by mgr;
+23. select sum(sal,nvl(comm,0)),avg(sal,nvl(comm,0)) from emp where sal>2000 and  in (10,20);
+24. select * from emp where extract(month from hiredate)=8 and extract(year from hiredate)=1980 and sal between 1501 and 2499;
+25. select * from emp where extract(month from hiredate) in (08,05,12);
+26. select name,to_char(hiredate,'dd-mm-yyyy') from emp where job='CLERK' and comm is not null;
+27. select concat(substr(ename,3,3),substr(job,-2,2)),empno,ename,job from emp;
+28. select to_char(nvl(comm,0),'$99,999.99') from emp where ename like 'A%N'; 
+29. select empno,ename,sal,case when comm>=600 then 'Excellent Keep it up' when comm<600 or comm is not null then 'GOOD' else 'Need Improvement' end remark from emp;
+30. select e.empno,e.ename,d.dname,e.deptno,case when e.deptno=0 then 'HR' when e.deptno=20 then 'ADMIN' when e.deptno=30 then 'ACCOUNTS' else 'PURCHASE' end Department from emp e,dept d where e.deptno=d.deptno;
+31.  create table mydept_DBDA
+   (
+   deptid number primary key,
+   dname varchar(20) not null unique,
+   dloc varchar(20));
+
+ insert into mydept_DBDA values(30,'Purchase','Mumbai');
+32.create table student1(
+   sid number(5) primary key,
+   sname varchar2(20) not null);
+
+ create table marks1(
+   studid number(5),
+   courseid number(5),
+   marks number(5),
+   constraint pk primary key(studid,courseid),
+   constraint fk_sid foreign key(studid) references student1(sid) on delete cascade,
+   constraint fk_cid foreign key(courseid) references course1(cid));
+33. create table emp10(
+    empno number(10) primary key,
+    ename varchar2(20) not null,
+    job varchar2(20) not null,
+    mgr number(10),
+    hiredate date,
+    sal number(10,2),
+    comm number(10,2),
+    deptno number(2) not null);
+34. alter table emp add (constraint pk123 primary key(empno));
+    alter table dept add(constraint pk124 primary key(deptno));
+    alter table salgrade add(constraint pk125 primary key(grade));
+    alter table emp add(constraint fk123 foreign key(deptno) references dept(deptno));
+    alter table emp add(netsal number default=1000);
+35. update emp SET sal=1.15*(sal+nvl(comm,0));
+    update emp SET job='MANAGER',mgr=7777 where deptno=10;
+36.alter table emp modify(job varchar2(20));
+   update emp SET job='SENIOR CLERK' where ename='SMITH';
+37.update emp SET sal=sal*1.15 where comm is not null or comm=0;
+38.select * from emp where sal>(select sal from emp where ename='SMITH');
+39. select * from emp where deptno=(select deptno from emp where ename='SMITH');
+40. select * from emp where sal between (select sal from emp where ename='rajan') and (select sal from emp where ename='revati');    
+41.  delete emp where deptno=(select deptno from emp where ename='ALLEN');
+42. update emp set sal=(select sal from emp where ename='MILLER')
+    where ename='ALLEN';
+43. update emp set sal=(select sal from emp where ename='MILLER') where deptno=(select deptno from emp where ename='WARD');
+44.select * from emp where sal> all(select sal from emp where ename in('SMITH','ALLEN'));
+45.select * from emp where sal>(select avg(sal) from emp where deptno=10);
+46. select * from emp where sal>(select avg(sal) from emp where ename='ALLEN');
+47. select * from emp where deptno=(select deptno from dept where dname='PURCHASE');
+48. select * from emp e where sal>all(select avg(sal) from emp a where a.deptno=e.deptno);
+49. select * from emp e where sal<all(select sal from emp a where e.mgr=a.empno);
+50. select * from emp e where sal> (select avg(sal) from emp a where e.job=a.job); 51. select ename,dname from emp e,dept d where e.deptno=d.deptno;
+52. select empno,ename,dname,grade from emp e,dept d, salgrade s where e.deptno=d.deptno and e.sal between s.losal and s.hisal;
+53. select e.empno,e.ename,e.mgr,m.ename from emp e,emp m where e.mgr=m.empno;
+54. create table product(
+    pid number primary key,
+    pname varchar2(30), 
+    price number(10,2),
+    qty number,
+    cid number,
+    sid number,
+    constraint fk100 foreign key(cid) references category(cid),
+    constraint fk101 foreign key(sid) references salesman(sid)    
+); 
+	create table salesman(
+	sid number primary key,
+	sname varchar2(30),
+	address varchar(30));
+	
+	create table category(
+	cid number primary key,
+	cname varchar2(30),
+	description varchar2(30));
+	insert into salesman values(1,'amit','pune');
+	insert into salesman values(2,'samir','mumbai');
+	insert into salesman values(3,'manu','nashik');
+	
+	insert into category values(100,'chips','cripy');
+	insert into category values(101,'cold drinks','cool');
+	insert into category values(102,'chocolates','sweet');
+
+	insert into product values(500,'lays',10,10,100,1);
+	insert into product values(501,'halke',20,30,100,1);
+	insert into product values(502,'coco cola',35,50,101,3);
+	insert into product values(503,'cadbury',20,5,102,2);
+
+	1. select pname,cname,sname from product p, category c, salesman s where            p.sid = s.sid and p.cid=c.cid;
+	2. select pname,sname from product p, salesman s where p.sid=s.sid and 	   s.address='pune';
+	3. select pname,cname from product p, category c where p.cid=c.cid;
+
+55. 
+	
+	
+
+
+ 
+ 

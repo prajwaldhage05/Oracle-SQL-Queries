@@ -1,0 +1,106 @@
+PL-SQL Excercise 
+1. Write a program that computes the perimeter and the area of a rectangle. Define
+your own values for the length and width. (Assuming that L and W are the length
+and width of the rectangle, Perimeter = 2*(L+W) and Area = L*W. Display the
+output on the screen using dbms_output.put_line.
+
+create or replace procedure pa
+as
+	l number:=7;
+	w number:=3;
+	p number;
+	a number;
+begin
+	p:=2*(l+w);
+	a:=l*w;
+	dbms_output.put_line('Perimeter:'|| p);
+	dbms_output.put_line('Area:'|| a);
+end;
+
+2. Write a program that declares an integer variable called num, assigns a value to it,
+and computes and inserts into the tempp table the value of the variable itself, its
+square, and its cube.
+
+create table tempp(value number,square number, cube number);
+CREATE OR REPLACE PROCEDURE jk(v tempp.value%type)
+AS
+	s number;
+	c number;
+BEGIN
+	s:=v*v;
+	c:=v*v*v;
+	insert into tempp values(v,s,c);
+	dbms_output.put_line('Inserted Sucessfully');
+END;
+
+3. Convert a temperature in Fahrenheit (F) to its equivalent in Celsius (C) and vice
+versa. The required formulae are:-
+C= (F-32)*5/9
+F= 9/5*C + 32
+Display the output on the screen using dbms_output.put_line. Data has to be
+input by the user.
+
+CREATE OR REPLACE PROCEDURE cal(temp number)
+AS
+	c number;
+	f number;
+BEGIN
+	f:=(9/5)*temp + 32;
+	c:=(f-32)*5/9;
+	dbms_output.put_line('Fahrenheit: '|| f);
+	dbms_output.put_line('Celsius:' || c);
+END;
+
+4. Convert a number of inches into yards, feet, and inches. For example, 124 inches
+equals 3 yards, 1 foot, and 4 inches. Display the output on the screen using
+dbms_output.put_line. Data has to be input by the user.
+
+CREATE OR REPLACE PROCEDURE dis(t number)
+AS
+	i number(10,2);
+	f number(10,2);
+	y number(10,2);
+BEGIN
+	i:=(124/4)*t;
+	y:=(124/3)*t;
+	f:=124*t;
+	dbms_output.put_line('Inches:'|| i);
+	dbms_output.put_line('Yard:'|| y);
+	dbms_output.put_line('Feet:'|| f);
+END;
+
+5. Write a program that enables a user to input an integer. The program should then
+state whether the integer is evenly divisible by 5. (Use decode instead of IF
+statement where required). Display the output on the screen using
+dbms_output.put_line. Data has to be input by the user.
+
+CREATE OR REPLACE PROCEDURE divi
+AS
+	i number;
+	msg varchar(20);
+BEGIN
+	i:=&x;
+	select DECODE(MOD(i,5),0,'Divisible by 5 ','Not Divisible by 5') into msg from dual;
+	dbms_output.put_line(msg);
+END;
+
+6. Your block should read in two real numbers and tell whether the product of the
+two numbers is equal to or greater than 100. Display the output on the screen
+using dbms_output.put_line. (Use decode instead of IF statement where
+required). Data has to be input by the user.
+
+CREATE OR REPLACE PROCEDURE two
+AS
+    i number;
+    j number;
+    p number;
+
+    msg varchar2(100);
+BEGIN
+    i:=&x;
+    j:=&y;
+    p:=i*j;
+
+    select DECODE(sign(p-100),1,'Greater than 100','Less than hundred') into msg from dual;
+    dbms_output.put_line(msg);
+END;
